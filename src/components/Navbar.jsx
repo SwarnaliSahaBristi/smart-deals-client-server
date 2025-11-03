@@ -1,11 +1,40 @@
-import React from "react";
-import { NavLink } from "react-router";
+import React, { use } from "react";
+import { Link, NavLink } from "react-router";
+import { AuthContext } from "../provider/AuthContext";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
-    const links = <>
-    <li><NavLink to='/'>Home</NavLink></li>
-    <li><NavLink to='/allproducts'>All Products</NavLink></li>
+  const { user,logOut,setUser } = use(AuthContext);
+  const handleLOgOut = () =>{
+    logOut()
+     .then(()=>{
+        toast.success("Logout Successfully!!")
+        setUser(null)
+    })
+    .catch(e=>{
+        toast.error(e.message)
+    })
+  }
+  const links = (
+    <>
+      <li>
+        <NavLink to="/">Home</NavLink>
+      </li>
+      <li>
+        <NavLink to="/allproducts">All Products</NavLink>
+      </li>
+      {user && (
+        <>
+          <li>
+            <NavLink to="/myProducts">MyProducts</NavLink>
+          </li>
+          <li>
+            <NavLink to="/myBids">My Bids</NavLink>
+          </li>
+        </>
+      )}
     </>
+  );
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
@@ -34,15 +63,27 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-2xl font-bold">Smart<span className="text-purple-500">Deals</span></a>
+        <a className="btn btn-ghost text-2xl font-bold">
+          Smart<span className="text-purple-500">Deals</span>
+        </a>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          {links}
-        </ul>
+        <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        {user ? (
+          <div className="flex gap-2 justify-between items-center">
+            <img className="rounded-full h-15 w-15" src={user.photoURL} alt="" />
+            <a onClick={handleLOgOut} className="btn">Log Out</a>
+          </div>
+        ) : (
+          <div>
+            <Link to="/login" className="btn">
+            Login
+          </Link>
+          <Link to='/register' className="btn">Register</Link>
+          </div>
+        )}
       </div>
     </div>
   );
