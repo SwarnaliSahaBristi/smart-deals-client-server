@@ -64,7 +64,7 @@ const Navbar = () => {
           </ul>
         </div>
         <a className="btn btn-ghost text-2xl font-bold italic">
-          Smart<span className="gradient-text">Deals</span>
+          Smart<span className="gradient-text text-[48px]">Deals</span>
         </a>
       </div>
       <div className="navbar-center hidden lg:flex">
