@@ -18,18 +18,18 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink to="/">Home</NavLink>
+        <NavLink className='navlink' to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink to="/allproducts">All Products</NavLink>
+        <NavLink className='navlink' to="/allproducts">All Products</NavLink>
       </li>
       {user && (
         <>
           <li>
-            <NavLink to="/myProducts">MyProducts</NavLink>
+            <NavLink className='navlink' to="/myProducts">MyProducts</NavLink>
           </li>
           <li>
-            <NavLink to="/myBids">My Bids</NavLink>
+            <NavLink className='navlink' to="/myBids">My Bids</NavLink>
           </li>
         </>
       )}
@@ -63,8 +63,8 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-2xl font-bold">
-          Smart<span className="text-purple-500">Deals</span>
+        <a className="btn btn-ghost text-2xl font-bold italic">
+          Smart<span className="gradient-text">Deals</span>
         </a>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -74,14 +74,14 @@ const Navbar = () => {
         {user ? (
           <div className="flex gap-2 justify-between items-center">
             <img className="rounded-full h-15 w-15" src={user.photoURL} alt="" />
-            <a onClick={handleLOgOut} className="btn">Log Out</a>
+            <a onClick={handleLOgOut} className="btn btn-primary">Log Out</a>
           </div>
         ) : (
-          <div>
-            <Link to="/login" className="btn">
+          <div className="flex gap-3">
+            <Link to="/login" className="btn btn-primary">
             Login
           </Link>
-          <Link to='/register' className="btn">Register</Link>
+          <Link to='/register' className="btn btn-primary">Register</Link>
           </div>
         )}
       </div>

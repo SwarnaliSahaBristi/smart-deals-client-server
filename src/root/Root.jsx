@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import MainLayout from "../layout/MainLayout";
-import Home from "../components/Home";
 import AllProducts from "../components/AllProducts";
 import LogIn from "../pages/LogIn";
 import Register from "../pages/Register";
 import MyProducts from "../pages/MyProducts";
 import MyBids from "../pages/MyBids";
+import PrivateRoute from "../privateRoute/PrivateRoute";
+import Home from "../pages/Home";
 
 export const router = createBrowserRouter([
   {
@@ -30,11 +31,11 @@ export const router = createBrowserRouter([
         },
         {
             path: '/myProducts',
-            element: <MyProducts></MyProducts>
+            element: <PrivateRoute><MyProducts></MyProducts></PrivateRoute>
         },
         {
             path: '/myBids',
-            element: <MyBids></MyBids>
+            element: <PrivateRoute><MyBids></MyBids></PrivateRoute>
         }
     ]
   },

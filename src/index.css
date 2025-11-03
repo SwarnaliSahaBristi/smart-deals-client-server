@@ -5,6 +5,33 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: blue;
+  --color-primary: #632EE3;
   --color-secondary: teal;
 }
+
+.btn-primary{
+  @apply bg-gradient-to-r from-[#632EE3] to-[#9F62F2] text-white border-none
+}
+
+.btn-primary:hover{
+  @apply opacity-90;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #632EE3, #9F62F2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.navlink{
+  @apply font-bold text-xl
+}
+
+a.active{
+  @apply text-[#9F62F2]
+}
+
+
