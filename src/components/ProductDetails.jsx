@@ -1,9 +1,13 @@
-import React, { useRef } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { Link, useLoaderData } from "react-router";
+import { AuthContext } from "../provider/AuthContext";
+import Swal from "sweetalert2";
 
 const ProductDetails = () => {
   const product = useLoaderData();
-  console.log(product);
+  const [bids, setBids] = useState([]);
+  const { user } = use(AuthContext);
+  //   console.log(product);
   const {
     image,
     description,
@@ -22,13 +26,60 @@ const ProductDetails = () => {
     email,
     usage,
   } = product;
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/products/bids/${_id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("bids for this product", data);
+        setBids(data);
+      });
+  }, [_id]);
+
   const bidModalRef = useRef(null);
   const handleBidModalOpen = () => {
     bidModalRef.current.showModal();
   };
-  const handleBidSubmit = (e) =>{
-        e.preventDefault();
-  }
+  const handleBidSubmit = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const bid = e.target.bid.value;
+    // console.log(_id, name, email, bid);
+    const newBid = {
+      product: _id,
+      buyer_name: name,
+      buyer_email: email,
+      buyer_image: user?.photoURL,
+      bid_price: bid,
+      status: "pending",
+    };
+    fetch("http://localhost:3000/bids", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(newBid),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          bidModalRef.current.close();
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          // add the new bid to the state
+          newBid._id = data.insertedId;
+          const newBids = [...bids, newBid];
+          newBids.sort((a,b)=>b.bid_price-a.bid_price)
+          setBids(newBids);
+        }
+      });
+  };
   return (
     <div className="bg-[#D9D9D9]">
       {/* {Product Info} */}
@@ -111,24 +162,40 @@ const ProductDetails = () => {
                 <p className="py-4">Offer something seller can resist...</p>
                 <form onSubmit={handleBidSubmit}>
                   <fieldset className="fieldset">
-                    <label className="label">Email</label>
-                    <input type="email" className="input" placeholder="Email" />
-                    <label className="label">Password</label>
+                    <label className="label">Name</label>
                     <input
-                      type="password"
+                      type="text"
+                      name="name"
                       className="input"
-                      placeholder="Password"
+                      readOnly
+                      defaultValue={user?.displayName}
                     />
-                    <div>
-                      <a className="link link-hover">Forgot password?</a>
-                    </div>
-                    <button className="btn btn-neutral mt-4">Login</button>
+                    {/* {email} */}
+                    <label className="label">Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      className="input"
+                      readOnly
+                      defaultValue={user?.email}
+                    />
+                    {/* {bid amount} */}
+                    <label className="label">Bid</label>
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="Your Bid"
+                      name="bid"
+                    />
+                    <button className="btn btn-neutral mt-4">
+                      Place Your Bid
+                    </button>
                   </fieldset>
                 </form>
                 <div className="modal-action">
                   <form method="dialog">
                     {/* if there is a button in form, it will close the modal */}
-                    <button className="btn">Close</button>
+                    <button className="btn">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -137,6 +204,55 @@ const ProductDetails = () => {
         </div>
       </div>
       {/* {Bids Info} */}
+      <div className="mt-10">
+        <h3 className="text-3xl font-bold">
+          Bids For This Product:{" "}
+          <span className="text-primary">{bids.length}</span>
+        </h3>
+        <div className="overflow-x-auto">
+          <table className="table">
+            {/* head */}
+            <thead>
+              <tr>
+                <th>SL no.</th>
+                <th>Buyer Name</th>
+                <th>Buyer Email</th>
+                <th>Bids Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* row 1 */}
+              {bids.map((bid, index) => (
+                <tr>
+                  <th>{index + 1}</th>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle h-12 w-12">
+                          <img
+                            src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                            alt="Avatar Tailwind CSS Component"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold">{bid.buyer_name}</div>
+                        <div className="text-sm opacity-50">United States</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{bid.buyer_email}</td>
+                  <td>{bid.bid_price}</td>
+                  <th>
+                    <button className="btn btn-ghost btn-xs">details</button>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
