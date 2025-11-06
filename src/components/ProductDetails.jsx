@@ -2,6 +2,7 @@ import React, { use, useEffect, useRef, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import { AuthContext } from "../provider/AuthContext";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const ProductDetails = () => {
   const product = useLoaderData();
@@ -27,18 +28,31 @@ const ProductDetails = () => {
     usage,
   } = product;
 
+  //Axios
   useEffect(() => {
-    fetch(`http://localhost:3000/products/bids/${_id}`,{
+    axios.get(`http://localhost:3000/products/bids/${_id}`,{
       headers: {
-        authorization: `Bearer ${user.accessToken}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("bids for this product", data);
-        setBids(data);
-      });
-  }, [_id,user]);
+    .then(data=>{
+      console.log('after axios', data)
+    })
+  }, [_id]);
+
+  // firebase token
+  // useEffect(() => {
+  //   fetch(`http://localhost:3000/products/bids/${_id}`,{
+  //     headers: {
+  //       authorization: `Bearer ${user.accessToken}`
+  //     }
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log("bids for this product", data);
+  //       setBids(data);
+  //     });
+  // }, [_id,user]);
 
   const bidModalRef = useRef(null);
   const handleBidModalOpen = () => {
@@ -72,7 +86,7 @@ const ProductDetails = () => {
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "Your work has been saved",
+            title: "Your bid has been added",
             showConfirmButton: false,
             timer: 1500,
           });
@@ -228,7 +242,7 @@ const ProductDetails = () => {
             <tbody>
               {/* row 1 */}
               {bids.map((bid, index) => (
-                <tr>
+                <tr key={bid._id}>
                   <th>{index + 1}</th>
                   <td>
                     <div className="flex items-center gap-3">

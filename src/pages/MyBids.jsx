@@ -1,27 +1,40 @@
 import React, { use, useEffect, useState } from "react";
 import { AuthContext } from "../provider/AuthContext";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../hook/useAxiosSecure";
 
 const MyBids = () => {
   const { user } = use(AuthContext);
   const [bids, setBIds] = useState([]);
+  const axiosSecure = useAxiosSecure();
 
   console.log('token', user.accessToken)
 
-  useEffect(() => {
-    if (user?.email) {
-      fetch(`http://localhost:3000/bids?email=${user.email}`,{
-        headers: {
-          authorization : `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          setBIds(data);
-        });
-    }
-  }, [user]);
+  //axios secure
+  useEffect(()=>{
+    axiosSecure.get(`bids?email=${user.email}`)
+    .then(data=>{
+      setBIds(data.data)
+    })
+  },[user,axiosSecure])
+
+  //JWT token
+  // useEffect(() => {
+  //   if (user?.email) {
+  //     fetch(`http://localhost:3000/bids?email=${user.email}`,{
+  //       headers: {
+  //         authorization : `Bearer ${localStorage.getItem('token')}`
+  //       }
+  //     })
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         console.log(data);
+  //         setBIds(data);
+  //       });
+  //   }
+  // }, [user]);
+  
+  //firebase token
   // useEffect(() => {
   //   if (user?.email) {
   //     fetch(`http://localhost:3000/bids?email=${user.email}`,{
