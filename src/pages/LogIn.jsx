@@ -3,16 +3,16 @@ import { AuthContext } from "../provider/AuthContext";
 import { Link } from "react-router";
 
 const LogIn = () => {
-    const {signInWithGoogle} = use(AuthContext);
-        const handleGoogleSignIn = () =>{
-            signInWithGoogle()
-            .then(result=>{
-                console.log(result.user)
-            })
-            .catch(error=>{
-                console.log(error.message)
-            })
-        }
+  const { signInWithGoogle } = use(AuthContext);
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then((result) => {
+        //console.log(result.user)
+      })
+      .catch((error) => {
+        //console.log(error.message)
+      });
+  };
   return (
     <div className="card bg-base-100 mx-auto w-full max-w-sm shrink-0 shadow-2xl mt-30">
       <div className="card-body">
@@ -28,7 +28,10 @@ const LogIn = () => {
           <button className="btn btn-primary mt-4">Login</button>
         </fieldset>
         {/* Google */}
-        <button onClick={handleGoogleSignIn} className="btn bg-white text-black border-[#e5e5e5]">
+        <button
+          onClick={handleGoogleSignIn}
+          className="btn bg-white text-black border-[#e5e5e5]"
+        >
           <svg
             aria-label="Google logo"
             width="16"
@@ -59,11 +62,11 @@ const LogIn = () => {
           Sign in with Google
         </button>
         <p className="font-semibold text-center pt-5">
-              Dont’t Have An Account ?{" "}
-              <Link className="text-secondary" to="/register">
-                Register
-              </Link>{" "}
-            </p>
+          Dont’t Have An Account ?{" "}
+          <Link className="text-secondary" to="/register">
+            Register
+          </Link>{" "}
+        </p>
       </div>
     </div>
   );

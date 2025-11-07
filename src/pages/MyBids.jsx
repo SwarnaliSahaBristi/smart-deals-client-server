@@ -8,43 +8,42 @@ const MyBids = () => {
   const [bids, setBIds] = useState([]);
   const axiosSecure = useAxiosSecure();
 
-  console.log('token', user.accessToken)
+  //console.log("token", user.accessToken);
 
   //axios secure
-  useEffect(()=>{
-    axiosSecure.get(`bids?email=${user.email}`)
-    .then(data=>{
-      setBIds(data.data)
-    })
-  },[user,axiosSecure])
+  useEffect(() => {
+    axiosSecure.get(`bids?email=${user.email}`).then((data) => {
+      setBIds(data.data);
+    });
+  }, [user, axiosSecure]);
 
   //JWT token
   // useEffect(() => {
   //   if (user?.email) {
-  //     fetch(`http://localhost:3000/bids?email=${user.email}`,{
+  //     fetch(`https://smart-deals-server-beta.vercel.app/bids?email=${user.email}`,{
   //       headers: {
   //         authorization : `Bearer ${localStorage.getItem('token')}`
   //       }
   //     })
   //       .then((res) => res.json())
   //       .then((data) => {
-  //         console.log(data);
+  //         //console.log(data);
   //         setBIds(data);
   //       });
   //   }
   // }, [user]);
-  
+
   //firebase token
   // useEffect(() => {
   //   if (user?.email) {
-  //     fetch(`http://localhost:3000/bids?email=${user.email}`,{
+  //     fetch(`https://smart-deals-server-beta.vercel.app/bids?email=${user.email}`,{
   //       headers: {
   //         authorization : `Bearer ${user.accessToken}`
   //       }
   //     })
   //       .then((res) => res.json())
   //       .then((data) => {
-  //         console.log(data);
+  //         //console.log(data);
   //         setBIds(data);
   //       });
   //   }
@@ -61,7 +60,7 @@ const MyBids = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/bids/${_id}`, {
+        fetch(`https://smart-deals-server-beta.vercel.app/bids/${_id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
@@ -74,8 +73,8 @@ const MyBids = () => {
               });
 
               //const remaining bids
-              const remainingBids = bids.filter(bid=>bid._id !== _id);
-              setBIds(remainingBids)
+              const remainingBids = bids.filter((bid) => bid._id !== _id);
+              setBIds(remainingBids);
             }
           });
       }

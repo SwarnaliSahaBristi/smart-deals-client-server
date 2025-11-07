@@ -6,8 +6,8 @@ import useAxiosSecure from "../hook/useAxiosSecure";
 
 const CreateAProduct = () => {
   const { user } = useAuth();
-//   const axiosInstance = useAxios();
-    const instance = useAxiosSecure();
+  //   const axiosInstance = useAxios();
+  const instance = useAxiosSecure();
 
   const handleCreateAProduct = (e) => {
     e.preventDefault();
@@ -15,14 +15,18 @@ const CreateAProduct = () => {
     const image = e.target.image.value;
     const price_min = e.target.price_min.value;
     const price_max = e.target.price_max.value;
-    console.log(title, image, price_min, price_max);
-    const newProduct = { title, image, price_min, price_max,
-        email: user.email,
-        seller_name: user.displayName
+    //console.log(title, image, price_min, price_max);
+    const newProduct = {
+      title,
+      image,
+      price_min,
+      price_max,
+      email: user.email,
+      seller_name: user.displayName,
     };
 
-    // axios.post("http://localhost:3000/products", newProduct).then((data) => {
-    //   console.log(data.data);
+    // axios.post("https://smart-deals-server-beta.vercel.app/products", newProduct).then((data) => {
+    //   //console.log(data.data);
     //   if (data.data.insertedId) {
     //     Swal.fire({
     //       position: "center",
@@ -36,14 +40,12 @@ const CreateAProduct = () => {
 
     // axiosInstance.post('/products',newProduct)
     // .then(data=>{
-    //     console.log(data.data)
+    //     //console.log(data.data)
     // })
 
-    instance.post('/products',newProduct)
-    .then(data=>{
-        console.log('after secure call',data.data)
-    })
-
+    instance.post("/products", newProduct).then((data) => {
+      ("after secure call", data.data);
+    });
   };
   return (
     <div className="lg:w-1/2 mx-auto">

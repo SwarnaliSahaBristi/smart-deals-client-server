@@ -38,10 +38,10 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log("current user", currentUser);
+      //console.log("current user", currentUser);
       if (currentUser) {
         const loggedUser = { email: currentUser.email };
-        fetch("http://localhost:3000/getToken", {
+        fetch("https://smart-deals-server-beta.vercel.app/getToken", {
           method: "POST",
           headers: {
             "content-type": "application/json",
@@ -50,8 +50,8 @@ const AuthProvider = ({ children }) => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log("after getting token", data);
-            localStorage.setItem('token', data.token)
+            //console.log("after getting token", data);
+            localStorage.setItem("token", data.token);
           });
       }
       setLoading(false);

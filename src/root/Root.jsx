@@ -15,40 +15,60 @@ export const router = createBrowserRouter([
     path: "/",
     Component: MainLayout,
     children: [
-        {
-            index: true,
-            Component: Home,
-        },
-        {
-            path: '/allproducts',
-            loader: ()=>fetch('http://localhost:3000/products'),
-            Component: AllProducts,
-        },
-        {
-            path: '/login',
-            element:<LogIn></LogIn>
-        },
-        {
-            path: '/register',
-            element: <Register></Register>
-        },
-        {
-            path: '/myProducts',
-            element: <PrivateRoute><MyProducts></MyProducts></PrivateRoute>
-        },
-        {
-            path: '/myBids',
-            element: <PrivateRoute><MyBids></MyBids></PrivateRoute>
-        },
-        {
-            path: '/productDetails/:id',
-            loader:({params}) => fetch(`http://localhost:3000/products/${params.id}`),
-            element: <PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
-        },
-        {
-            path: '/createAProduct',
-            element: <PrivateRoute><CreateAProduct></CreateAProduct></PrivateRoute>
-        }
-    ]
+      {
+        index: true,
+        Component: Home,
+      },
+      {
+        path: "/allproducts",
+        loader: () =>
+          fetch("https://smart-deals-server-beta.vercel.app/products"),
+        Component: AllProducts,
+      },
+      {
+        path: "/login",
+        element: <LogIn></LogIn>,
+      },
+      {
+        path: "/register",
+        element: <Register></Register>,
+      },
+      {
+        path: "/myProducts",
+        element: (
+          <PrivateRoute>
+            <MyProducts></MyProducts>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/myBids",
+        element: (
+          <PrivateRoute>
+            <MyBids></MyBids>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/productDetails/:id",
+        loader: ({ params }) =>
+          fetch(
+            `https://smart-deals-server-beta.vercel.app/products/${params.id}`
+          ),
+        element: (
+          <PrivateRoute>
+            <ProductDetails></ProductDetails>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/createAProduct",
+        element: (
+          <PrivateRoute>
+            <CreateAProduct></CreateAProduct>
+          </PrivateRoute>
+        ),
+      },
+    ],
   },
 ]);

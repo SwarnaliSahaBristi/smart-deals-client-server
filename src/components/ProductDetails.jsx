@@ -8,7 +8,7 @@ const ProductDetails = () => {
   const product = useLoaderData();
   const [bids, setBids] = useState([]);
   const { user } = use(AuthContext);
-  //   console.log(product);
+  //   //console.log(product);
   const {
     image,
     description,
@@ -30,26 +30,27 @@ const ProductDetails = () => {
 
   //Axios
   useEffect(() => {
-    axios.get(`http://localhost:3000/products/bids/${_id}`,{
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    })
-    .then(data=>{
-      console.log('after axios', data)
-    })
+    axios
+      .get(`https://smart-deals-server-beta.vercel.app/products/bids/${_id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((data) => {
+        ("after axios", data);
+      });
   }, [_id]);
 
   // firebase token
   // useEffect(() => {
-  //   fetch(`http://localhost:3000/products/bids/${_id}`,{
+  //   fetch(`https://smart-deals-server-beta.vercel.app/products/bids/${_id}`,{
   //     headers: {
   //       authorization: `Bearer ${user.accessToken}`
   //     }
   //   })
   //     .then((res) => res.json())
   //     .then((data) => {
-  //       console.log("bids for this product", data);
+  //       //console.log("bids for this product", data);
   //       setBids(data);
   //     });
   // }, [_id,user]);
@@ -63,7 +64,7 @@ const ProductDetails = () => {
     const name = e.target.name.value;
     const email = e.target.email.value;
     const bid = e.target.bid.value;
-    // console.log(_id, name, email, bid);
+    // //console.log(_id, name, email, bid);
     const newBid = {
       product: _id,
       buyer_name: name,
@@ -72,7 +73,7 @@ const ProductDetails = () => {
       bid_price: bid,
       status: "pending",
     };
-    fetch("http://localhost:3000/bids", {
+    fetch("https://smart-deals-server-beta.vercel.app/bids", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -93,7 +94,7 @@ const ProductDetails = () => {
           // add the new bid to the state
           newBid._id = data.insertedId;
           const newBids = [...bids, newBid];
-          newBids.sort((a,b)=>b.bid_price-a.bid_price)
+          newBids.sort((a, b) => b.bid_price - a.bid_price);
           setBids(newBids);
         }
       });
